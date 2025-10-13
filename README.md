@@ -28,7 +28,6 @@ Built with **Swing (GUI)**, **JDBC (database integration)**, and **SQLite (local
 ---
 
 ## 🛠️ Project Roadmap — Music Store Inventory App
-## 🛠️ Project Roadmap — Music Store Inventory App
 
 A structured plan outlining each development phase, from initial setup to advanced features.
 
