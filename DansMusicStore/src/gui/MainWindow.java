@@ -18,7 +18,7 @@ public class MainWindow extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new MenuPanel(this), "menu");
-        mainPanel.add(new AddProductPanel(), "add");
+        mainPanel.add(new AddProductPanel(this), "add");
         mainPanel.add(new ViewProductPanel(), "view");
         mainPanel.add(new SearchProductPanel(), "search");
         mainPanel.add(new DeleteProductPanel(), "delete");

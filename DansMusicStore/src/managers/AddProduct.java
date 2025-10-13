@@ -2,6 +2,8 @@ package managers;
 
 import dao.*;
 import models.*;
+
+import java.util.Locale;
 import java.util.Scanner;
 
 public class AddProduct {
@@ -43,4 +45,19 @@ public class AddProduct {
 
         System.out.println("Product added successfully!");
     }
+
+    public static void addProduct(String name, String brand, double price, int quantity, String category) {
+
+        switch (category.toLowerCase()) {
+            case "guitar" -> GuitarDAO.addGuitar(new Guitar (name, brand, price, quantity));
+            case "drums" -> DrumDAO.addDrum(new Drum(name, brand, price, quantity));
+            case "bass" -> BassDAO.addBass(new Bass(name, brand, price, quantity));
+            case "keyboard" -> KeyboardDAO.addKeyboard(new Keyboard(name, brand, price, quantity));
+            case "amp" -> AmpDAO.addAmp(new Amp(name, brand, price, quantity));
+            case "accessories" -> AccessoriesDAO.addAccessories(new Accessories(name, brand, price, quantity));
+            default -> throw new IllegalArgumentException("Invalid category: " + category);
+        }
+        System.out.println("Product added successfully to table: " + category);
+    }
+
 }

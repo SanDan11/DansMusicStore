@@ -1,31 +1,52 @@
 package utils;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
+
 
 public class DatabaseBackup {
 
-    private static final String DB_NAME = "Music_store.db";
-    private static final String BACKUP_DIR = "backup";
+    private static final String SOURCE_DB = "data/music_store.db";
+    private static final String BACKUP_FOLDER = "backup/";
 
     public static void createBackup() {
-        try{
-            Files.createDirectories(Paths.get(BACKUP_DIR));
 
-            String timestamp = new SimpleDateFormat("MMddyyyy_HHmmss").format(new Date());
-            String backupName = "music_Store_backup_ " + timestamp + " .db";
+        File sourceFile = new File(SOURCE_DB);
+        File backupDir = new File(BACKUP_FOLDER);
 
-            Path source = Paths.get(DB_NAME);
-            Path target = Paths.get(BACKUP_DIR, backupName);
+        if (!backupDir.exists()) {
+            backupDir.mkdirs();
+        }
 
-            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        String timeStamp = new SimpleDateFormat("MMddyyyy_HHmmss").format(new Date());
+        File backupFile = new File(backupDir, "Music_store_backup_" + timeStamp + ".db");
 
-            System.out.println("Backup created successfully at: " + target.toAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("Backup failed: " + e.getMessage());
+        try (FileChannel src = new FileInputStream(sourceFile).getChannel();
+            FileChannel dest = new FileOutputStream(backupFile).getChannel()) {
+
+            dest.transferFrom(src, 0, src.size());
+            System.out.println("Backup created: " + backupFile.getName());
+
+            File[] backups = backupDir.listFiles((dir, name) -> name.endsWith(".db"));
+            if (backups != null && backups.length > 3) {
+                Arrays.sort(backups, Comparator.comparing(File::lastModified).reversed());
+                for (int i = 3; i < backups.length; i++){
+                    if (backups[i].delete()) {
+                    System.out.println("Delete old backup: " + backups[i].getName());
+                }
+            }
+        }
+
+    } catch (IOException e) {
+        System.out.println("Error creating backup: " + e.getMessage());
         }
     }
 }
