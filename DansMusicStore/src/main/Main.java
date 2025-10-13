@@ -1,33 +1,43 @@
 package main;
 
-
+import managers.*;
 import database.DatabaseSetup;
-import managers.AddProduct;
-import managers.ViewProduct;
-
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+        // Make sure tables exist
+        DatabaseSetup.createTables();
+
         Scanner input = new Scanner(System.in);
+        boolean running = true;
 
-        System.out.println("Music Store Inventory");
-        System.out.println("1. Setup Database");
-        System.out.println("2. Add Product");
-        System.out.println("3. View Products");
-        System.out.println("4. Search Products");
-        System.out.println("5. Update Products");
-        System.out.println("0: Exit ");
-        int choice = input.nextInt();
+        while (running) {
+            System.out.println("\n🎸 Music Store Inventory");
+            System.out.println("========================");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Products");
+            System.out.println("3. Update Product");
+            System.out.println("4. Delete Product");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
 
-        switch (choice) {
-            case 1 -> DatabaseSetup.main(null);
-            case 2 -> AddProduct.main(null);
-            case 3 -> ViewProduct.main(null);
-            case 4 -> managers.SearchProduct.main(null);
-            case 5 -> managers.UpdateProduct.main(null);
-            default -> System.out.println("Invalid choice");
+            int choice = input.nextInt();
+
+            switch (choice) {
+                case 1 -> AddProduct.addProductMenu();
+                case 2 -> ViewProduct.viewProductsMenu();
+                case 3 -> UpdateProduct.updateProductMenu();
+                case 4 -> DeleteProduct.deleteProductMenu();
+                case 5 -> {
+                    System.out.println("Goodbye!");
+                    running = false;
+                }
+                default -> System.out.println("Invalid choice, try again.");
+            }
         }
+
+        input.close();
     }
 }

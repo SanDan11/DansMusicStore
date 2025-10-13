@@ -1,77 +1,46 @@
 package managers;
 
-import database.DBConnection;
-import java.sql.*;
+import dao.*;
+import models.*;
 import java.util.Scanner;
 
 public class AddProduct {
 
-    public static boolean addGuitar(String name, String brand, double price, int quantity) {
-
-        if (name == null || name.trim().isEmpty()) {
-            System.out.println("Name is required");
-            return false;
-        }
-        if (price < 0) {
-            System.out.println("price cannont be negative");
-            return false;
-        }
-        if (quantity < 0) {
-            System.out.println("quantity cannot be negative");
-            return false;
-        }
-
-        final String sql = "INSERT INTO guitars(name, brand, price, quantity) VALUES (?, ?, ?, ?)";
-
-        try(Connection conn = DBConnection.connect();
-        PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, name.trim());
-            if (brand == null || brand.trim().isEmpty()) {
-                ps.setNull(2, Types.VARCHAR);
-            } else {
-                ps.setString(2, brand.trim());
-            }
-            ps.setDouble(3, price);
-            ps.setInt(4, quantity);
-
-            int rows = ps.executeUpdate();
-            if (rows == 1) {
-                try (ResultSet keys = ps.getGeneratedKeys()) {
-                    if (keys.next()) {
-                        long id = keys.getLong(1);
-                        System.out.println("Added guitar id=" + id + " (" + name.trim() + ")");
-                    } else {
-                        System.out.println("Added guitar (id not returned");
-                    }
-                }
-                return true;
-            } else {
-                System.out.println("Insert affected " + rows + " rows (expected 1)");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Insert failed: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public  static void main(String[] args) {
+    public static void addProductMenu() {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("🎸 Add New Guitar");
+        System.out.println("\n=== Add New Product ===");
+        System.out.println("1. Guitar");
+        System.out.println("2. Drum");
+        System.out.println("3. Bass");
+        System.out.println("4. Keyboard");
+        System.out.println("5. Amp");
+        System.out.println("6. Audio");
+        System.out.println("7. Accessories");
+        System.out.print("Choose category: ");
+        int choice = input.nextInt();
+        input.nextLine();
+
         System.out.print("Enter name: ");
         String name = input.nextLine();
-
         System.out.print("Enter brand: ");
         String brand = input.nextLine();
-
         System.out.print("Enter price: ");
         double price = input.nextDouble();
-
         System.out.print("Enter quantity: ");
         int quantity = input.nextInt();
 
-        addGuitar(name, brand, price, quantity);
+        switch (choice) {
+            case 1 -> GuitarDAO.addGuitar(new Guitar(name, brand, price, quantity));
+            case 2 -> DrumDAO.addDrum(new Drum(name, brand, price, quantity));
+            case 3 -> BassDAO.addBass(new Bass(name, brand, price, quantity));
+            case 4 -> KeyboardDAO.addKeyboard(new Keyboard(name, brand, price, quantity));
+            case 5 -> AmpDAO.addAmp(new Amp(name, brand, price, quantity));
+            case 6 -> AudioDAO.addAudio(new Audio(name, brand, price, quantity));
+            case 7 -> AccessoriesDAO.addAccessories(new Accessories(name, brand, price, quantity));
+            default -> System.out.println("Invalid option.");
+        }
+
+        System.out.println("Product added successfully!");
     }
 }

@@ -8,21 +8,92 @@ import java.sql.Statement;
 public class DatabaseSetup {
 
     public static void createTables() {
-        String sql = "CREATE TABLE IF NOT EXISTS guitars ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "name TEXT NOT NULL,"
-                + "brand TEXT, "
-                + "price REAL,"
-                + "quantity INTEGER"
-                + ");";
 
-        try (Connection conn = DBConnection.connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println(" Guitars table ready. ");
+        String guitarTable = "CREATE TABLE IF NOT EXISTS guitar (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String drumTable = "CREATE TABLE IF NOT EXISTS drum (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String bassTable = "CREATE TABLE IF NOT EXISTS bass (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String keyboardTable = "CREATE TABLE IF NOT EXISTS keyboard (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String accessoriesTable = "CREATE TABLE IF NOT EXISTS accessories (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String ampTable = "CREATE TABLE IF NOT EXISTS amp (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+        String audioTable = "CREATE TABLE IF NOT EXISTS audio (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "brand TEXT, " +
+                "price REAL, " +
+                "quantity INTEGER" +
+                ");";
+
+
+        try(Connection conn = DBConnection.connect();
+            Statement stmt = conn.createStatement()) {
+
+            stmt.execute(guitarTable);
+            System.out.println("Guitar table ready.");
+
+            stmt.execute(drumTable);
+            System.out.println("Drum table ready.");
+
+            stmt.execute(bassTable);
+            System.out.println("Bass table ready.");
+
+            stmt.execute(keyboardTable);
+            System.out.println("Keyboard table ready.");
+
+            stmt.execute(accessoriesTable);
+            System.out.println("Accessories table ready.");
+
+            stmt.execute(ampTable);
+            System.out.println("Amp table ready.");
+
+            stmt.execute(audioTable);
+            System.out.println("Audio table ready.");
+
         } catch (SQLException e) {
-            System.out.println(" Error creating table: " + e.getMessage());
+            System.out.println("Error creating tables: " + e.getMessage());
         }
+
     }
     public static void main(String[] args) {
         createTables();

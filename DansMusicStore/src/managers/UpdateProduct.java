@@ -1,52 +1,43 @@
 package managers;
 
-import database.DBConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import dao.*;
+import models.*;
 import java.util.Scanner;
-
 
 public class UpdateProduct {
 
-    public static void updateGuitar(int id, double newPrice, int newQuantity) {
-
-        final String sql = "UPDATE guitars set price = ?, quantity = ? WHERE id = ?";
-
-        try(Connection conn = DBConnection.connect();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setDouble(1, newPrice);
-            ps.setInt(2, newQuantity);
-            ps.setInt(3, id);
-
-            int rows = ps.executeUpdate();
-
-            if (rows > 0) {
-                System.out.println("Update guitar ID " + id + " successfully.");
-            } else {
-                System.out.println("No record found with that ID" + id);
-            }
-        } catch (SQLException e)  {
-            System.out.println("Update failed: " + e.getMessage());
-        }
-    }
-
-    public static void main(String[] args) {
+    public static void updateProductMenu() {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("🎸 Update Guitar Info");
-        System.out.print("Enter ID to update: ");
-        int id = input.nextInt();
+        System.out.println("\n=== Update Product ===");
+        System.out.println("1. Guitar");
+        System.out.println("2. Drum");
+        System.out.println("3. Bass");
+        System.out.println("4. Keyboard");
+        System.out.println("5. Amp");
+        System.out.println("6. Audio");
+        System.out.println("7. Accessories");
+        System.out.print("Choose category: ");
+        int choice = input.nextInt();
 
+        System.out.print("Enter product ID to update: ");
+        int id = input.nextInt();
         System.out.print("Enter new price: ");
         double price = input.nextDouble();
-
         System.out.print("Enter new quantity: ");
-        int quantity = input.nextInt();
+        int qty = input.nextInt();
 
-        updateGuitar(id, price, quantity);
+        switch (choice) {
+            case 1 -> GuitarDAO.updateGuitar(new Guitar(id, "", "", price, qty));
+            case 2 -> DrumDAO.updateDrum(new Drum(id, "", "", price, qty));
+            case 3 -> BassDAO.updateBass(new Bass(id, "", "", price, qty));
+            case 4 -> KeyboardDAO.updateKeyboard(new Keyboard(id, "", "", price, qty));
+            case 5 -> AmpDAO.updateAmp(new Amp(id, "", "", price, qty));
+            case 6 -> AudioDAO.updateAudio(new Audio(id, "", "", price, qty));
+            case 7 -> AccessoriesDAO.updateAccessories(new Accessories(id, "", "", price, qty));
+            default -> System.out.println("Invalid option.");
+        }
+
+        System.out.println("✅ Product updated successfully!");
     }
-
 }
