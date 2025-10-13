@@ -27,28 +27,29 @@ public class AccessoriesDAO {
         }
     }
 
-    public static List<Accessories> getAllAccessories() {
-        List<Accessories> list = new ArrayList<>();
-        String sql = "SELECT * FROM accessories";
+    public static List<Object[]> getAllAccessories() {
+        List<Object[]> products = new ArrayList<>();
+        String query = "SELECT id, name, brand, price, quantity FROM accessories";
 
         try (Connection conn = DBConnection.connect();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                list.add(new Accessories(
+                products.add(new Object[]{
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("brand"),
                         rs.getDouble("price"),
                         rs.getInt("quantity")
-                ));
+                });
             }
 
         } catch (SQLException e) {
-            System.out.println("Read failed: " + e.getMessage());
+            System.out.println("Error retrieving accessories: " + e.getMessage());
         }
-        return list;
+
+        return products;
     }
 
     public static boolean updateAccessories(Accessories a) {

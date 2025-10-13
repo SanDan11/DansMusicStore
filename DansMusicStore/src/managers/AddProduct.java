@@ -50,7 +50,7 @@ public class AddProduct {
 
         switch (category.toLowerCase()) {
             case "guitar" -> GuitarDAO.addGuitar(new Guitar (name, brand, price, quantity));
-            case "drums" -> DrumDAO.addDrum(new Drum(name, brand, price, quantity));
+            case "drum" -> DrumDAO.addDrum(new Drum(name, brand, price, quantity));
             case "bass" -> BassDAO.addBass(new Bass(name, brand, price, quantity));
             case "keyboard" -> KeyboardDAO.addKeyboard(new Keyboard(name, brand, price, quantity));
             case "amp" -> AmpDAO.addAmp(new Amp(name, brand, price, quantity));

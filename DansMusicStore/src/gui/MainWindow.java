@@ -19,7 +19,7 @@ public class MainWindow extends JFrame {
 
         mainPanel.add(new MenuPanel(this), "menu");
         mainPanel.add(new AddProductPanel(this), "add");
-        mainPanel.add(new ViewProductPanel(), "view");
+        mainPanel.add(new ViewProductPanel(this), "view");
         mainPanel.add(new SearchProductPanel(), "search");
         mainPanel.add(new DeleteProductPanel(), "delete");
 

@@ -27,28 +27,29 @@ public class AudioDAO {
         }
     }
 
-    public static List<Audio> getAllAudio() {
-        List<Audio> list = new ArrayList<>();
-        String sql = "SELECT * FROM audio";
+    public static List<Object[]> getAllAudio() {
+        List<Object[]> products = new ArrayList<>();
+        String query = "SELECT id, name, brand, price, quantity FROM audio";
 
         try (Connection conn = DBConnection.connect();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                list.add(new Audio(
+                products.add(new Object[]{
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("brand"),
                         rs.getDouble("price"),
                         rs.getInt("quantity")
-                ));
+                });
             }
 
         } catch (SQLException e) {
-            System.out.println("Read failed: " + e.getMessage());
+            System.out.println("Error retrieving audio: " + e.getMessage());
         }
-        return list;
+
+        return products;
     }
 
     public static boolean updateAudio(Audio a) {

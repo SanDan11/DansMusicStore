@@ -27,28 +27,29 @@ public class KeyboardDAO {
         }
     }
 
-    public static List<Keyboard> getAllKeyboards() {
-        List<Keyboard> list = new ArrayList<>();
-        String sql = "SELECT * FROM keyboard";
+    public static List<Object[]> getAllKeyboards() {
+        List<Object[]> products = new ArrayList<>();
+        String query = "SELECT id, name, brand, price, quantity FROM keyboard";
 
         try (Connection conn = DBConnection.connect();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                list.add(new Keyboard(
+                products.add(new Object[]{
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("brand"),
                         rs.getDouble("price"),
                         rs.getInt("quantity")
-                ));
+                });
             }
 
         } catch (SQLException e) {
-            System.out.println("Read failed: " + e.getMessage());
+            System.out.println("Error retrieving Keyboards: " + e.getMessage());
         }
-        return list;
+
+        return products;
     }
 
     public static boolean updateKeyboard(Keyboard k) {

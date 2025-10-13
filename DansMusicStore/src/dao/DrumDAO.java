@@ -27,30 +27,30 @@ public class DrumDAO {
         }
     }
 
-    public static List<Drum> getAllDrums() {
-        List<Drum> list = new ArrayList<>();
-        String sql = "SELECT * FROM drum";
+    public static List<Object[]> getAllDrums() {
+        List<Object[]> products = new ArrayList<>();
+        String query = "SELECT id, name, brand, price, quantity FROM drum";
 
         try (Connection conn = DBConnection.connect();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                list.add(new Drum(
+                products.add(new Object[]{
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("brand"),
                         rs.getDouble("price"),
                         rs.getInt("quantity")
-                ));
+                });
             }
 
         } catch (SQLException e) {
-            System.out.println("Read failed: " + e.getMessage());
+            System.out.println("Error retrieving drum: " + e.getMessage());
         }
-        return list;
-    }
 
+        return products;
+    }
     public static boolean updateDrum(Drum d) {
         String sql = "UPDATE drum SET price=?, quantity=? WHERE id=?";
         try (Connection conn = DBConnection.connect();
