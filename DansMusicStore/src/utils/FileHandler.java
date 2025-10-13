@@ -1,4 +1,4 @@
-package managers.utils;
+package utils;
 
 public class FileHandler {
 }

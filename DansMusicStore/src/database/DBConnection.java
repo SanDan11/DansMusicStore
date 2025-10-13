@@ -7,18 +7,19 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-
-    private static final String DB_NAME = "music_store.db";
-    private static final String URL = "jdbc:sqlite:" + DB_NAME;
+    private static final String DB_PATH = "data/music_store.db";
+    private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect() {
         try {
+            File dbFile = new File(DB_PATH);
+            File parentDir = dbFile.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
             Connection conn = DriverManager.getConnection(URL);
-
-
-            File dbFile = new File(DB_NAME);
             System.out.println("Connected to database: " + dbFile.getAbsolutePath());
-
             return conn;
 
         } catch (SQLException e) {
@@ -27,7 +28,6 @@ public class DBConnection {
         }
     }
 
-    // Optional test entry point
     public static void main(String[] args) {
         Connection conn = connect();
         if (conn != null) {

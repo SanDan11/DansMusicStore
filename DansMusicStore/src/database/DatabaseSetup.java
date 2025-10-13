@@ -69,6 +69,8 @@ public class DatabaseSetup {
         try(Connection conn = DBConnection.connect();
             Statement stmt = conn.createStatement()) {
 
+            stmt.execute("PRAGMA journal_mode=WAL");
+
             stmt.execute(guitarTable);
             System.out.println("Guitar table ready.");
 
