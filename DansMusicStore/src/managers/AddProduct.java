@@ -1,8 +1,8 @@
 package managers;
 
 import database.DBConnection;
-
 import java.sql.*;
+import java.util.Scanner;
 
 public class AddProduct {
 
@@ -57,6 +57,21 @@ public class AddProduct {
     }
 
     public  static void main(String[] args) {
-        addGuitar("Stratocaster", "Fender", 999.99, 5);
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("🎸 Add New Guitar");
+        System.out.print("Enter name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter brand: ");
+        String brand = input.nextLine();
+
+        System.out.print("Enter price: ");
+        double price = input.nextDouble();
+
+        System.out.print("Enter quantity: ");
+        int quantity = input.nextInt();
+
+        addGuitar(name, brand, price, quantity);
     }
 }
