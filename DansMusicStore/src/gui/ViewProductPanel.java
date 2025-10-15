@@ -17,6 +17,7 @@ public class ViewProductPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JButton refreshButton, backButton;
     private MainWindow window;
+    private JLabel statusLabel;
 
     public ViewProductPanel(MainWindow window) {
         this.window = window;
@@ -40,21 +41,30 @@ public class ViewProductPanel extends JPanel {
         topPanel.add(categoryBox);
         topPanel.add(refreshButton);
         topPanel.add(backButton);
-        add(topPanel, BorderLayout.SOUTH);
 
         // *** proper types
         String[] cols = {"ID", "Name", "Brand", "Price", "Quantity"};
         tableModel = new DefaultTableModel(cols, 0) {
             @Override
             public Class<?> getColumnClass(int c) {
-                 return switch (c) {
-                     case 0, 4 -> Integer.class;
-                     case 3 -> Double.class;
-                     default -> String.class;
-                 };
+                 switch (c) {
+                     case 0:
+                     case 4:
+                         return Integer.class;
+                     case 3:
+                        return Double.class;
+                     default:
+                         return String.class;
+                 }
             }
-            @Override public boolean isCellEditiontable(int r, int c) { return false; }
+            @Override public boolean isCellEditable(int r, int c) { return false; }
+
         };
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+
+        bottomPanel.add(topPanel, BorderLayout.NORTH);
 
         productTable = new JTable(tableModel);
         productTable.setAutoCreateRowSorter(true);
@@ -63,9 +73,16 @@ public class ViewProductPanel extends JPanel {
         DefaultTableCellRenderer right = new DefaultTableCellRenderer();
         right.setHorizontalAlignment(SwingConstants.RIGHT);
         productTable.getColumnModel().getColumn(3).setCellRenderer(right);
-        productTable.getColumnModel().getColumn(3).setCellRenderer(right);
+        productTable.getColumnModel().getColumn(4).setCellRenderer(right);
 
         add(new JScrollPane(productTable), BorderLayout.CENTER);
+
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        statusLabel = new JLabel("Ready.");
+        statusPanel.add(statusLabel);
+        add(statusPanel, BorderLayout.SOUTH);
+
+        add(bottomPanel, BorderLayout.SOUTH);
 
         refreshButton.addActionListener(e -> loadProducts());
         backButton.addActionListener(e -> window.showPanel("menu"));
@@ -77,6 +94,8 @@ public class ViewProductPanel extends JPanel {
         String category = (String) categoryBox.getSelectedItem();
         refreshButton.setEnabled(false);
         tableModel.setRowCount(0);
+        statusLabel.setText("Loading " + category + " products...");
+
 
         new SwingWorker<List<Object[]>, Void>() {
             @Override
@@ -89,16 +108,16 @@ public class ViewProductPanel extends JPanel {
                 try {
                     List<Object[]> products = get();
                     if (products.isEmpty()) {
-                        JOptionPane.showMessageDialog(ViewProductPanel.this,
-                                "No products found for category: " + category,
-                                "Empty", JOptionPane.INFORMATION_MESSAGE);
+                        statusLabel.setText("No products found for " + category + ".");
                     } else {
                         for (Object[] row : products) tableModel.addRow(row);
+                        statusLabel.setText("Loaded " + products.size() + " " + category + " items. ");
                     }
                 } catch (Exception ex) {
+                    statusLabel.setText("Error loading products.");
                     JOptionPane.showMessageDialog(ViewProductPanel.this,
                             "Error loading products: " + ex.getMessage(),
-                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                                    "Database error",JOptionPane.ERROR_MESSAGE);
                 } finally {
                     refreshButton.setEnabled(true);
                 }
