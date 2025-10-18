@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    private static final String DB_PATH = "data/music_store.db";
+    private static final String DB_PATH = "C:/Users/danie/Documents/DansMusicStore/music_store.db";
     private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect() {

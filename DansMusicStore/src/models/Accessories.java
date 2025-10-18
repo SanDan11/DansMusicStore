@@ -6,20 +6,23 @@ public class Accessories {
     private String brand;
     private double price;
     private int quantity;
+    private String location;
 
-    public Accessories(int id, String name, String brand, double price, int quantity) {
+    public Accessories(int id, String name, String brand, double price, int quantity, String location) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
+        this.location = location;
     }
 
-    public Accessories(String name, String brand, double price, int quantity) {
+    public Accessories(String name, String brand, double price, int quantity, String location) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
+        this.location = location;
     }
 
     // Getters and Setters
@@ -28,15 +31,18 @@ public class Accessories {
     public String getBrand() { return brand; }
     public double getPrice() { return price; }
     public int getQuantity() { return quantity; }
+    public String getLocation() { return location; }
 
     public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setBrand(String brand) { this.brand = brand; }
     public void setPrice(double price) { this.price = price; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setLocation(String location) { this.location = location; }
 
     @Override
     public String toString() {
-        return name + " (" + brand + ") - $" + price + " [" + quantity + "]";
+        return name + " (" + brand + ") - $" + price + " [" + quantity + "]" +
+                " | Location" + location;
     }
 }

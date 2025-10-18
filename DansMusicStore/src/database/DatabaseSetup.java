@@ -14,7 +14,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String drumTable = "CREATE TABLE IF NOT EXISTS drum (" +
@@ -22,7 +23,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String bassTable = "CREATE TABLE IF NOT EXISTS bass (" +
@@ -30,7 +32,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String keyboardTable = "CREATE TABLE IF NOT EXISTS keyboard (" +
@@ -38,7 +41,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String accessoriesTable = "CREATE TABLE IF NOT EXISTS accessories (" +
@@ -46,7 +50,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String ampTable = "CREATE TABLE IF NOT EXISTS amp (" +
@@ -54,7 +59,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
         String audioTable = "CREATE TABLE IF NOT EXISTS audio (" +
@@ -62,7 +68,8 @@ public class DatabaseSetup {
                 "name TEXT NOT NULL, " +
                 "brand TEXT, " +
                 "price REAL, " +
-                "quantity INTEGER" +
+                "quantity INTEGER, " +
+                "location TEXT" +
                 ");";
 
 
